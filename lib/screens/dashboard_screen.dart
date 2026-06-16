@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'profile_screen.dart';
 import 'skill_assessment_screen.dart';
 import 'resume_analyzer_screen.dart';
-
+import 'career_paths_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -61,10 +61,17 @@ class DashboardScreen extends StatelessWidget {
 ),
 
             DashboardCard(
-              title: "Career Paths",
-              icon: Icons.work,
-              onTap: () {},
-            ),
+  title: "Career Paths",
+  icon: Icons.work,
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const CareerPathsScreen(),
+      ),
+    );
+  },
+),
           ],
         ),
       ),
