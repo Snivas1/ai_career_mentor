@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'profile_screen.dart';
+import 'skill_assessment_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -34,8 +35,15 @@ class DashboardScreen extends StatelessWidget {
             DashboardCard(
               title: "Skill Assessment",
               icon: Icons.psychology,
-              onTap: () {},
-            ),
+               onTap: () {
+               Navigator.push(
+                context,
+                  MaterialPageRoute(
+        builder: (context) => const SkillAssessmentScreen(),
+      ),
+    );
+  },
+),
 
             DashboardCard(
               title: "Resume Analyzer",
