@@ -10,10 +10,9 @@ class AICareerMentorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'AI Career Mentor',
-      home: const SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }
