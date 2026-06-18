@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/user_profile.dart';
-import 'dashboard_screen.dart';
+import '../../models/user_profile.dart';
+import '../dashboard/dashboard_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

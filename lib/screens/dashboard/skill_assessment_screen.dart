@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/user_profile.dart';
 
 class SkillAssessmentScreen extends StatefulWidget {
   const SkillAssessmentScreen({super.key});
@@ -64,48 +65,57 @@ class _SkillAssessmentScreenState extends State<SkillAssessmentScreen> {
             const SizedBox(height: 20),
 
             ElevatedButton(
-  onPressed: () {
-    String result = "";
+              onPressed: () {
+                int count = 0;
 
-    if (flutter) {
-      result += "• Flutter Developer\n";
-    }
+                if (flutter) count++;
+                if (python) count++;
+                if (aiMl) count++;
+                if (webDev) count++;
 
-    if (python) {
-      result += "• Python Developer\n";
-    }
+                UserProfile.skillsCount = count;
 
-    if (aiMl) {
-      result += "• AI Engineer\n";
-      result += "• Machine Learning Engineer\n";
-    }
+                String result = "";
 
-    if (webDev) {
-      result += "• Full Stack Developer\n";
-    }
+                if (flutter) {
+                  result += "• Flutter Developer\n";
+                }
 
-    if (result.isEmpty) {
-      result = "Please select at least one skill.";
-    }
+                if (python) {
+                  result += "• Python Developer\n";
+                }
 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Career Recommendations"),
-        content: Text(result),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("OK"),
-          ),
-        ],
-      ),
-    );
-  },
-  child: const Text("Analyze Skills"),
-),
+                if (aiMl) {
+                  result += "• AI Engineer\n";
+                  result += "• Machine Learning Engineer\n";
+                }
+
+                if (webDev) {
+                  result += "• Full Stack Developer\n";
+                }
+
+                if (result.isEmpty) {
+                  result = "Please select at least one skill.";
+                }
+
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Career Recommendations"),
+                    content: Text(result),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("OK"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: const Text("Analyze Skills"),
+            ),
           ],
         ),
       ),

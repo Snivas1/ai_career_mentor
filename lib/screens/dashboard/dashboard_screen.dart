@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'profile_screen.dart';
+import '../profile/profile_screen.dart';
 import 'skill_assessment_screen.dart';
 import 'resume_analyzer_screen.dart';
 import 'career_paths_screen.dart';
-import '../models/user_profile.dart';
+import '../../models/user_profile.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -74,9 +74,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     const SizedBox(height: 15),
 
-                    const Text(
-                      "78%",
-                      style: TextStyle(
+                    Text(
+                      "${40 + (UserProfile.skillsCount * 10)}%",
+                      style: const TextStyle(
                         fontSize: 40,
                         color: Colors.indigo,
                         fontWeight: FontWeight.bold,
@@ -86,7 +86,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     const SizedBox(height: 10),
 
                     LinearProgressIndicator(
-                      value: 0.78,
+                      value: (40 + (UserProfile.skillsCount * 10)) / 100,
+                      color: Colors.indigo,
                       minHeight: 10,
                       borderRadius: BorderRadius.circular(10),
                     ),

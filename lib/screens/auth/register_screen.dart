@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/user_profile.dart';
+import '../dashboard/dashboard_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -25,9 +26,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_emailCtl.text.isNotEmpty && _nameCtl.text.isNotEmpty) {
       UserProfile.name = _nameCtl.text;
       UserProfile.email = _emailCtl.text;
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+      );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fill required fields')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Fill required fields')));
     }
   }
 
@@ -39,10 +45,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: _nameCtl, decoration: const InputDecoration(labelText: 'Full Name')),
-            TextField(controller: _emailCtl, decoration: const InputDecoration(labelText: 'Email')),
+            TextField(
+              controller: _nameCtl,
+              decoration: const InputDecoration(labelText: 'Full Name'),
+            ),
+            TextField(
+              controller: _emailCtl,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
             const SizedBox(height: 12),
-            TextField(controller: _passCtl, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
+            TextField(
+              controller: _passCtl,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
             const SizedBox(height: 20),
             ElevatedButton(onPressed: _register, child: const Text('Register')),
           ],

@@ -5,4 +5,5 @@ class UserProfile {
   static String branch = "";
   static String year = "";
   static String careerGoal = "";
+  static int skillsCount = 0;
 }
