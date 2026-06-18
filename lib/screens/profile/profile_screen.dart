@@ -12,10 +12,23 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final collegeController = TextEditingController();
   final branchController = TextEditingController();
   final yearController = TextEditingController();
   final goalController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+
+    nameController.text = UserProfile.name;
+    emailController.text = UserProfile.email;
+    phoneController.text = UserProfile.phone;
+    collegeController.text = UserProfile.college;
+    branchController.text = UserProfile.branch;
+    yearController.text = UserProfile.year;
+    goalController.text = UserProfile.careerGoal;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +59,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               controller: emailController,
               decoration: const InputDecoration(
                 labelText: "Email",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            TextField(
+              controller: phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: "Phone Number",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -96,12 +119,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  if (nameController.text.trim().isEmpty ||
+                      emailController.text.trim().isEmpty ||
+                      phoneController.text.trim().isEmpty ||
+                      collegeController.text.trim().isEmpty ||
+                      branchController.text.trim().isEmpty ||
+                      yearController.text.trim().isEmpty ||
+                      goalController.text.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please fill all fields")),
+                    );
+                    return;
+                  }
+
+                  if (!emailController.text.contains("@")) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Enter a valid email")),
+                    );
+                    return;
+                  }
+
+                  if (phoneController.text.length != 10) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Phone number must be 10 digits"),
+                      ),
+                    );
+                    return;
+                  }
+
+                  if (int.tryParse(yearController.text) == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Enter valid passing year")),
+                    );
+                    return;
+                  }
+
                   UserProfile.name = nameController.text.trim();
                   UserProfile.email = emailController.text.trim();
+                  UserProfile.phone = phoneController.text.trim();
                   UserProfile.college = collegeController.text.trim();
                   UserProfile.branch = branchController.text.trim();
                   UserProfile.year = yearController.text.trim();
                   UserProfile.careerGoal = goalController.text.trim();
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Profile Saved Successfully")),
+                  );
 
                   Navigator.pushAndRemoveUntil(
                     context,

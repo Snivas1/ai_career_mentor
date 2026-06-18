@@ -1,27 +1,44 @@
 import 'package:flutter/material.dart';
+import '../../models/user_profile.dart';
 import '../profile/profile_screen.dart';
 import 'skill_assessment_screen.dart';
 import 'resume_analyzer_screen.dart';
 import 'career_paths_screen.dart';
-import '../../models/user_profile.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
-
-  @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
-}
-
-class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    final userName = UserProfile.name.isEmpty ? "Student" : UserProfile.name;
+    int score = 5;
+
+    if (UserProfile.name.isNotEmpty) score += 2;
+    if (UserProfile.email.isNotEmpty) score += 2;
+    if (UserProfile.phone.isNotEmpty) score += 2;
+    if (UserProfile.college.isNotEmpty) score += 3;
+    if (UserProfile.branch.isNotEmpty) score += 2;
+    if (UserProfile.year.isNotEmpty) score += 2;
+    if (UserProfile.careerGoal.isNotEmpty) score += 2;
+
+    score += UserProfile.skillsCount * 10;
+
+    if (score > 100) {
+      score = 100;
+    }
+
+    String recommendedCareer() {
+      if (UserProfile.skillsCount >= 3) {
+        return "AI Engineer";
+      }
+      return "Software Developer";
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FB),
 
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.indigo,
         title: const Text("AI Career Mentor"),
+        backgroundColor: Colors.indigo,
       ),
 
       body: SingleChildScrollView(
@@ -30,9 +47,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.indigo,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF4F46E5), Color(0xFF6366F1)],
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -42,16 +61,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     "Welcome Back 👋",
                     style: TextStyle(color: Colors.white70),
                   ),
-
                   const SizedBox(height: 8),
-
                   Text(
-                    UserProfile.name.isEmpty ? "Student" : UserProfile.name,
+                    userName,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 26,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    UserProfile.careerGoal.isEmpty
+                        ? "Set your career goal"
+                        : UserProfile.careerGoal,
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 ],
               ),
@@ -61,7 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
                     const Text(
@@ -71,11 +95,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
                     Text(
-                      "${40 + (UserProfile.skillsCount * 10)}%",
+                      "$score%",
                       style: const TextStyle(
                         fontSize: 40,
                         color: Colors.indigo,
@@ -84,29 +106,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
 
                     const SizedBox(height: 10),
-
-                    LinearProgressIndicator(
-                      value: (40 + (UserProfile.skillsCount * 10)) / 100,
-                      color: Colors.indigo,
-                      minHeight: 10,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                    LinearProgressIndicator(value: score / 100),
                   ],
                 ),
               ),
             ),
 
             const SizedBox(height: 20),
-
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Quick Actions",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            const SizedBox(height: 15),
 
             GridView.count(
               shrinkWrap: true,
@@ -115,7 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
               children: [
-                ActionCard(
+                DashboardCard(
                   title: "Profile",
                   icon: Icons.person,
                   onTap: () {
@@ -125,8 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                 ),
-
-                ActionCard(
+                DashboardCard(
                   title: "Skills",
                   icon: Icons.psychology,
                   onTap: () {
@@ -138,8 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                 ),
-
-                ActionCard(
+                DashboardCard(
                   title: "Resume",
                   icon: Icons.description,
                   onTap: () {
@@ -151,8 +155,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                 ),
-
-                ActionCard(
+                DashboardCard(
                   title: "Careers",
                   icon: Icons.work,
                   onTap: () {
@@ -171,18 +174,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             Card(
               child: ListTile(
-                leading: const Icon(Icons.auto_awesome, color: Colors.indigo),
+                leading: const Icon(Icons.auto_awesome),
                 title: const Text("Recommended Career"),
-                subtitle: const Text("AI Engineer"),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                subtitle: Text(recommendedCareer()),
               ),
             ),
-
-            const SizedBox(height: 10),
-
+            const SizedBox(height: 15),
             Card(
               child: ListTile(
-                leading: const Icon(Icons.school, color: Colors.green),
+                leading: const Icon(Icons.school),
                 title: const Text("Today's Goal"),
                 subtitle: const Text("Complete Flutter State Management"),
               ),
@@ -194,12 +194,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-class ActionCard extends StatelessWidget {
+class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
 
-  const ActionCard({
+  const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
@@ -210,15 +210,18 @@ class ActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       child: Card(
-        elevation: 3,
+        elevation: 4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 45, color: Colors.indigo),
+            Icon(icon, size: 50, color: Colors.indigo),
             const SizedBox(height: 10),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),
